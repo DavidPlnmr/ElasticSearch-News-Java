@@ -44,6 +44,13 @@
             <version>1.7.5</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+
     </dependencies>
 
 </project>
