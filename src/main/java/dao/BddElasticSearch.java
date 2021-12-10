@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -9,9 +10,9 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
+
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexResponse;
+
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -21,7 +22,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.RestClientBuilder.HttpClientConfigCallback;
 import org.elasticsearch.index.query.AbstractQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
+
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -60,34 +61,32 @@ public class BddElasticSearch {
      *                  Example : `client.index("person", "name", "Paul",
      *                  "birth_date", new Date())`
      */
-    public void index(String indexName, Object... fields) {
+    public IndexRequest createIndex(String indexName, Object... fields) {
 
-        IndexRequest request = new IndexRequest(indexName).source(fields);
-
-        try {
-            IndexResponse response = rClient.index(request, RequestOptions.DEFAULT);
-        } catch (IOException e) {
-            System.out.println("Can not index the source given");
-        }
+        return new IndexRequest(indexName).source(fields);
 
     }
 
-    public void index(String indexName, String documentId, Object... fields) {
-        IndexRequest request = new IndexRequest(indexName).id(documentId).source(fields);
+    public IndexRequest createIndex(String indexName, String documentId, Object... fields) {
+        return new IndexRequest(indexName).id(documentId).source(fields);
+
+    }
+
+    public void makeIndex(IndexRequest indexRequest) {
         try {
-            IndexResponse response = rClient.index(request, RequestOptions.DEFAULT);
+            rClient.index(indexRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
             System.out.println("Can not index the source given");
         }
     }
 
-    public void multipleDocumentIndex(String indexName, IndexRequest... requests) {
+    public void indexMultipleDocument(String indexName, List<IndexRequest> requests) {
         BulkRequest bulkRequests = new BulkRequest();
         for (IndexRequest request : requests) {
             bulkRequests.add(request);
         }
         try {
-            BulkResponse response = rClient.bulk(bulkRequests, RequestOptions.DEFAULT);
+            rClient.bulk(bulkRequests, RequestOptions.DEFAULT);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             System.out.println("Can not index all the index in the bulk");
@@ -100,6 +99,14 @@ public class BddElasticSearch {
 
     public SearchHits searchAll(String indexName) {
         return this.getHits(indexName, QueryBuilders.matchAllQuery());
+    }
+
+    public SearchHits searchSpecificField(String indexName, String fieldname, String content) {
+        return this.getHits(indexName, QueryBuilders.matchQuery(fieldname, content));
+    }
+
+    public SearchHits searchRange(String indexName, String fieldname, Object from, Object to) {
+        return this.getHits(indexName, QueryBuilders.rangeQuery(fieldname).from(from, true).to(to, true));
     }
 
     private SearchHits getHits(String indexName, AbstractQueryBuilder queryBuilder) {

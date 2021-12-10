@@ -6,11 +6,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ApiNews {
 
-    private final String COUNTRY = "us";
-    private final String LANGUAGE = "en";
+    private final String COUNTRY = "fr";
+    private final String LANGUAGE = "fr";
     private HttpClient client;
     private HttpRequest request;
     private HttpResponse<String> response;
@@ -53,7 +57,6 @@ public class ApiNews {
         switch (statusCode) {
             case 200:
                 System.out.println("OK. The request was executed successfully.");
-                writeResponse();
                 break;
             case 400:
                 System.err.println(
@@ -75,5 +78,11 @@ public class ApiNews {
 
     private void writeResponse() {
         System.out.println(this.response.body());
+    }
+
+    public List<Object> getJSON() {
+        JSONObject jsonObject = new JSONObject(this.response.body());
+
+        return ((JSONArray) jsonObject.get("articles")).toList();
     }
 }
