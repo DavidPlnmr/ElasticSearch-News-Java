@@ -1,16 +1,12 @@
-import java.util.Date;
-
 import java.util.List;
 import java.util.Map;
 
-import org.elasticsearch.search.SearchHit;
-
-import dao.BddElasticSearch;
+import dao.ApiNews;
 import dao.BddIndex;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Dotenv dotenv = Dotenv.load();
 
         BddIndex bddIndex = new BddIndex("test");
@@ -22,5 +18,6 @@ public class Main {
 
         bddIndex.close();
 
+        ApiNews api = new ApiNews(dotenv.get("API_URL"), dotenv.get("API_KEY"));
     }
 }
