@@ -21,7 +21,7 @@ public class BddElasticSearch implements Bdd {
                 new UsernamePasswordCredentials(username, password));
 
         RestClientBuilder builder = RestClient.builder(
-                new HttpHost("localhost", 9200))
+                new HttpHost(hostname, port))
                 .setHttpClientConfigCallback(new HttpClientConfigCallback() {
                     @Override
                     public HttpAsyncClientBuilder customizeHttpClient(
