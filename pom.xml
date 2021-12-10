@@ -11,14 +11,6 @@
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>es-snapshots</id>
-            <name>elasticsearch snapshot repo</name>
-            <url>https://snapshots.elastic.co/maven/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
@@ -26,12 +18,12 @@
             <version>7.15.2</version>
         </dependency>
 
+        <!-- Dependancy to authenticate on elasticsearch -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-to-slf4j</artifactId>
             <version>2.8.2</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -44,7 +36,7 @@
             <version>1.7.5</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java -->
+        <!-- https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java Dotenv Dependancy-->
         <dependency>
             <groupId>io.github.cdimascio</groupId>
             <artifactId>dotenv-java</artifactId>
