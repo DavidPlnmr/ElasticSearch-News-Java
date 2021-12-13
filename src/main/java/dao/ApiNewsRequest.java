@@ -7,10 +7,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-public class ApiNews {
+import org.elasticsearch.core.Map;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
+public class ApiNewsRequest {
+
+    private final String URL = "https://newsapi.org/v2";
+    private final String TYPE = "top-headlines";
     private final String COUNTRY = "us";
-    private final String LANGUAGE = "en";
+
     private HttpClient client;
     private HttpRequest request;
     private HttpResponse<String> response;
@@ -25,27 +31,28 @@ public class ApiNews {
         return Singleton.client;
     }
 
-    public ApiNews(String apiUrl, String apiKey) throws Exception {
+    public ApiNewsRequest() throws Exception {
         this.client = getInstance();
-        this.request = buildRequest(apiUrl, apiKey);
+        this.request = buildRequest();
         this.response = buildResponse();
         checkHttpResponseValidity();
+    }
+
+    private HttpRequest buildRequest() {
+        Dotenv dotenv = Dotenv.load();
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(String.format("%s/%s?country=%s", URL, TYPE, COUNTRY)))
+                .timeout(Duration.ofSeconds(30))
+                .setHeader("x-api-key", dotenv.get("API_KEY"))
+                .build();
+        return request;
     }
 
     private HttpResponse<String> buildResponse() throws IOException, InterruptedException {
         HttpResponse<String> response = client.send(this.request,
                 HttpResponse.BodyHandlers.ofString());
         return response;
-    }
-
-    private HttpRequest buildRequest(String apiUrl, String apiKey) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(String.format("%s?country=%s&language=%s", apiUrl, COUNTRY, LANGUAGE)))
-                .timeout(Duration.ofSeconds(30))
-                .setHeader("x-api-key", apiKey)
-                .build();
-        return request;
     }
 
     private void checkHttpResponseValidity() throws Exception {
