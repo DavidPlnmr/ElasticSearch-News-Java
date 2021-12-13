@@ -6,16 +6,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
 
-import org.elasticsearch.core.Map;
-
-import io.github.cdimascio.dotenv.Dotenv;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ApiNewsRequest {
 
-    private final String URL = "https://newsapi.org/v2";
-    private final String TYPE = "top-headlines";
-    private final String COUNTRY = "us";
+    private final static String URL = "https://newsapi.org/v2/top-headlines";
+    private final static String COUNTRY = "fr";
+    private final static String LANGUAGE = "fr";
 
     private HttpClient client;
     private HttpRequest request;
@@ -31,20 +31,23 @@ public class ApiNewsRequest {
         return Singleton.client;
     }
 
-    public ApiNewsRequest() throws Exception {
+    public ApiNewsRequest(String apiKey) throws Exception {
+        this(URL, apiKey, COUNTRY, LANGUAGE);
+    }
+
+    public ApiNewsRequest(String url, String apiKey, String country, String language) throws Exception {
         this.client = getInstance();
-        this.request = buildRequest();
+        this.request = buildRequest(url, apiKey, country, language);
         this.response = buildResponse();
         checkHttpResponseValidity();
     }
 
-    private HttpRequest buildRequest() {
-        Dotenv dotenv = Dotenv.load();
+    private HttpRequest buildRequest(String url, String apiKey, String country, String language) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(String.format("%s/%s?country=%s", URL, TYPE, COUNTRY)))
+                .uri(URI.create(String.format("%s?country=%s&language=%s", url, country, language)))
                 .timeout(Duration.ofSeconds(30))
-                .setHeader("x-api-key", dotenv.get("API_KEY"))
+                .setHeader("x-api-key", apiKey)
                 .build();
         return request;
     }
@@ -60,7 +63,6 @@ public class ApiNewsRequest {
         switch (statusCode) {
             case 200:
                 System.out.println("OK. The request was executed successfully.");
-                writeResponse();
                 break;
             case 400:
                 System.err.println(
@@ -82,5 +84,11 @@ public class ApiNewsRequest {
 
     private void writeResponse() {
         System.out.println(this.response.body());
+    }
+
+    public List<Object> getJSON() {
+        JSONObject jsonObject = new JSONObject(this.response.body());
+
+        return ((JSONArray) jsonObject.get("articles")).toList();
     }
 }

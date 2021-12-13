@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,17 +8,26 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        Dotenv dotenv = Dotenv.load();
+        BddIndex bddIndex = new BddIndex("news");
 
-        // BddIndex bddIndex = new BddIndex("test");
+        // bddIndex.index("test", "name", "John", "surname", "Pacsal", "birth_date", new
+        // Date());
 
-        // // bdd.index("test", "name", "David", "surname", "Paul", "birth_date", new
-        // // Date());
+        // List<Map<String, Object>> lst = bddIndex.getDocumentsByKeyword("Skurt");
 
-        // List<Map<String, Object>> lst = bddIndex.getAllDocuments();
+        // System.out.println(lst);
 
         // bddIndex.close();
 
-        // ApiNewsRequest api = new ApiNewsRequest();
-        // api.request();
+        List lstApi = new ApiNewsRequest(
+                "https://newsapi.org/v2/top-headlines",
+                dotenv.get("API_KEY"), "fr", "fr")
+                        .getJSON();
+
+        bddIndex.indexMultipleDocuments(lstApi);
+
+        bddIndex.close();
+        // System.out.println(lstApi);
     }
 }
