@@ -44,6 +44,10 @@ public class BddIndex {
         return getListOfMap(bddEs.searchRange(this.indexName, fieldname, from, to));
     }
 
+    public List<Map<String, Object>> getDocumentFromSpecificField(String fieldname, String matchString) {
+        return getListOfMap(bddEs.searchSpecificField(this.indexName, fieldname, matchString));
+    }
+
     public void indexDocument(Object... fields) {
         IndexRequest indexReq = this.bddEs.createIndex(indexName, fields);
         this.bddEs.makeIndex(indexReq);

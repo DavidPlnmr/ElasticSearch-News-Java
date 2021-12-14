@@ -25,7 +25,10 @@ public class Main {
                 dotenv.get("API_KEY"), "fr", "fr")
                         .getJSON();
 
-        bddIndex.indexMultipleDocuments(lstApi);
+        // bddIndex.indexMultipleDocuments(lstApi);
+
+        // System.out.println(bddIndex.getDocumentsByKeyword(""));
+        System.out.println(bddIndex.get);
 
         bddIndex.close();
         // System.out.println(lstApi);
