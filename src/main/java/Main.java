@@ -1,11 +1,8 @@
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 import dao.ApiNewsRequest;
-import dao.BddIndex;
 import dao.BddNews;
-import dao.News;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
@@ -17,7 +14,7 @@ public class Main {
 
         // bddIndex.close();
 
-        List lstApi = new ApiNewsRequest(
+        List<Object> lstApi = new ApiNewsRequest(
                 "https://newsapi.org/v2/top-headlines",
                 dotenv.get("API_KEY"), "gb", "en")
                         .getJSON();

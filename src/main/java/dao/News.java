@@ -3,8 +3,6 @@ package dao;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.http.util.LangUtils;
-
 public class News {
     private String title;
     private String description;

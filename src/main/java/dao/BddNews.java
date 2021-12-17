@@ -14,6 +14,13 @@ public class BddNews extends BddIndex {
         super(DEFAULT_INDEX_NAME);
     }
 
+    /**
+     * This method convert the list of map to a list of news using its builder
+     * 
+     * @param queryList The list of map
+     * @return Returns a list of news
+     */
+    @SuppressWarnings("unchecked")
     public List<News> getAsListNews(List<Map<String, Object>> queryList) {
         List<News> lst = new ArrayList<News>();
 
