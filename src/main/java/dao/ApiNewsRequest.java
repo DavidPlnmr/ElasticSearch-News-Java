@@ -1,15 +1,27 @@
+//#region Import
 package dao;
 
+/*****************************************
+ **************  JAVA  ******************
+ ****************************************/
+// I/O Exceeption
 import java.io.IOException;
+// Manage time (for query)
+import java.time.Duration;
+import java.util.List;
+// Create URI for connection
 import java.net.URI;
+// Http client, request, response
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.util.List;
 
+/*****************************************
+ **************  JSON  ******************
+ ****************************************/
 import org.json.JSONArray;
 import org.json.JSONObject;
+//#endregion
 
 public class ApiNewsRequest {
 
@@ -131,13 +143,6 @@ public class ApiNewsRequest {
             default:
                 throw new Exception("Unknown exception : bad use of API");
         }
-    }
-
-    /**
-     * Write the api response body in the command line
-     */
-    private void writeResponse() {
-        System.out.println(this.response.body());
     }
 
     /**
