@@ -4,17 +4,14 @@ import java.util.Map;
 
 import dao.ApiNewsRequest;
 import dao.BddIndex;
+import dao.BddNews;
+import dao.News;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         Dotenv dotenv = Dotenv.load();
-        BddIndex bddIndex = new BddIndex("news");
-
-        // bddIndex.index("test", "name", "John", "surname", "Pacsal", "birth_date", new
-        // Date());
-
-        // List<Map<String, Object>> lst = bddIndex.getDocumentsByKeyword("Skurt");
+        BddNews bddIndex = new BddNews();
 
         // System.out.println(lst);
 
@@ -22,15 +19,17 @@ public class Main {
 
         List lstApi = new ApiNewsRequest(
                 "https://newsapi.org/v2/top-headlines",
-                dotenv.get("API_KEY"), "fr", "fr")
+                dotenv.get("API_KEY"), "gb", "en")
                         .getJSON();
+
+        System.out.println(lstApi);
 
         // bddIndex.indexMultipleDocuments(lstApi);
 
-        // System.out.println(bddIndex.getDocumentsByKeyword(""));
-        System.out.println(bddIndex.get);
+        // List<Map<String, Object>> lst = bddIndex.getDocumentsByKeyword("Didier");
+        // List<News> lstNews = bddIndex.getAsListNews(lst);
 
+        // System.out.println(lstNews);
         bddIndex.close();
-        // System.out.println(lstApi);
     }
 }
