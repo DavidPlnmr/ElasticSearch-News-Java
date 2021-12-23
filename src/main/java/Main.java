@@ -14,14 +14,14 @@ public class Main {
 
         // bddIndex.close();
 
-        List<Object> lstApi = new ApiNewsRequest(
+        List lstApi = new ApiNewsRequest(
                 "https://newsapi.org/v2/top-headlines",
                 dotenv.get("API_KEY"), "gb", "en")
                         .getJSON();
 
         System.out.println(lstApi);
 
-        // bddIndex.indexMultipleDocuments(lstApi);
+        bddIndex.indexMultipleDocuments(lstApi);
 
         // List<Map<String, Object>> lst = bddIndex.getDocumentsByKeyword("Didier");
         // List<News> lstNews = bddIndex.getAsListNews(lst);
