@@ -1,8 +1,10 @@
 
 import java.util.List;
+import java.util.Map;
 
 import dao.ApiNewsRequest;
 import dao.BddNews;
+import dao.News;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
@@ -14,14 +16,14 @@ public class Main {
 
         // bddIndex.close();
 
-        List lstApi = new ApiNewsRequest(
-                "https://newsapi.org/v2/top-headlines",
-                dotenv.get("API_KEY"), "gb", "en")
-                        .getJSON();
+        // List lstApi = new ApiNewsRequest(
+        // "https://newsapi.org/v2/top-headlines",
+        // dotenv.get("API_KEY"), "gb", "en")
+        // .getJSON();
 
-        System.out.println(lstApi);
+        // System.out.println(lstApi);
 
-        bddIndex.indexMultipleDocuments(lstApi);
+        // bddIndex.indexMultipleDocuments(lstApi);
 
         // List<Map<String, Object>> lst = bddIndex.getDocumentsByKeyword("Didier");
         // List<News> lstNews = bddIndex.getAsListNews(lst);
